@@ -12,8 +12,10 @@ create table if not exists users (
 user_nutrient_schema = f""" 
 create table if not exists user_nutrients (
     id integer primary key,
+    kcal int,
     protein int,
-    iron int,
+    glucid int,
+    lipid int,
     foreign key (id) references users (id) on delete cascade
     )
 """
@@ -33,12 +35,25 @@ def log_in(username: str, password : str, co : sql.Connection):
     
     return user
 
+def user_nutrients(user_id : int, co : sql.Connection):
+    return co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
+
+def set_user_nutrients(user_id : int, nutris : dict, co : sql.Connection):
+    user_nutris = co.execute("select (id) from user_nutrients where id == ?", [user_id]).fetchone()
+    if user_nutris:
+        placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])
+        print(f"update {placeholders} where id == ?")
+        co.execute(f"update user_nutrients set {placeholders} where id == ?", list(nutris.values()) + [user_id])
+    else:
+        nutri_cols = ",".join(nutris.keys())
+        placeholders = ",".join("?"*len(nutris))
+        co.execute(f"insert into user_nutrients (id,{nutri_cols}) values (?,{placeholders})", [user_id]+list(nutris.values()) )
+    co.commit()
     
 if __name__ == "__main__":
     co = sql.connect("users.db")
     co.execute("PRAGMA foreign_keys = ON;")
     co.execute(users_schema)
     co.execute(user_nutrient_schema)
-    co.execute("insert into user_nutrients (iron) values ( ?)", (100,))
     co.commit()
     

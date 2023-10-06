@@ -30,7 +30,7 @@ def test_login( username, password):
 
 def test_info(token):
     headers = {'Authorization': f'Bearer {token}'}
-    resp = requests.post(host + '/api/infos', headers=headers, json={"protein":100})
+    resp = requests.post(host + '/api/infos', headers=headers, json={"glucid":150,"protein":100})
     resp2 = requests.get(host + '/api/infos', headers=headers)
     return resp, resp2
 username = "issoyu"
@@ -45,3 +45,7 @@ print(resp)
 jwt = resp.json()["access_token"]
 
 resp, resp2 = test_info(jwt)
+print("test info", resp, resp2.json())
+
+resp_meals = requests.get(host + '/api/meal_plan', headers = {'Authorization': f'Bearer {jwt}'})
+print(resp_meals)

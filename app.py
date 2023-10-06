@@ -10,7 +10,10 @@ import sqlite3 as sql
 from flask import Flask, request, g, Response, jsonify
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 
-from users import register_user, log_in
+from users import register_user, log_in, user_nutrients, set_user_nutrients
+from lib import df_meals, default_daily_goals, get_meal_plan
+from utils import dict_from_row
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'fillboosted'
 jwt = JWTManager(app)
@@ -65,19 +68,35 @@ def info_route():
     co = get_users_db()
     
     if request.method == "GET":
-        res = co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
-        if res is None:
+        nutris = user_nutrients(user_id, co)
+        if nutris is None:
             return {"error":"user infos not set"}, 400
         else:
-            return dict(res),200 
+            return dict(nutris),200 
         
     if request.method == "POST":
         nutris = request.get_json()
-        nutri_cols = ",".join(nutris.keys())
-        placeholders = ",".join("?"*len(nutris))
-        co.execute(f"insert into user_nutrients (id,{nutri_cols}) values (?,{placeholders})", [user_id]+list(nutris.values()) )
-        co.commit()
+        set_user_nutrients(user_id, nutris, co)
         return '', 200
+
+@app.route("/api/meal_plan")
+@jwt_required()
+def meal_plan_route():
+    user_id = get_jwt_identity()
+    co = get_users_db()
+    
+    goals_row = user_nutrients(user_id, co)
+    if goals_row is None:
+        return {'message': 'user infos not set'}, 400
+    
+    #fill missing nutris with default values
+    goals = dict(goals_row)
+    goals.pop("id")
+    goals = {k:v if v is not None else default_daily_goals[k] for k,v in goals.items()}
+    
+    meals = get_meal_plan(df_meals, goals, tolerance=0.2)
+    
+    return meals.to_dict(), 200
     
 
 @app.teardown_appcontext
