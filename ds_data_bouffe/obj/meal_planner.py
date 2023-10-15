@@ -15,7 +15,8 @@ class MealPlanner:
 
     @staticmethod
     def compute_loss(meal_plan, objective):
-        return np.abs(meal_plan - objective).sum()
+        ratio_losses = np.sum(meal_plan, axis=0) / objective - 1
+        return np.linalg.norm(ratio_losses, 2)
 
     @staticmethod
     def solve_naive(current_plan, all_meals, objective):
