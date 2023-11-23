@@ -1,0 +1,129 @@
+{
+    "week": [
+      {
+        "date": "2023-11-20",
+        "day": 1,
+        "meals": [
+          {
+            "meal_label": "Petit déjeuner",
+            "meal_type": "Breakfast",
+            "meal_nut_stats": {
+              "protein": "20g",
+              "protein_daily_percentage": "40%",
+              "carbohydrate": "40g",
+              "carbohydrate_daily_percentage": "30%",
+              "fat": "15g",
+              "fat_daily_percentage": "25%",
+              "fiber": "5g",
+              "fiber_daily_percentage": "20%",
+              "vitamin_c": "30mg",
+              "vitamin_c_daily_percentage": "50%",
+              "kcal": 400
+            },
+            "recipe": [
+              "2 eggs",
+              "100g whole grain toast",
+              "50g avocado",
+              "1 orange"
+            ]
+          },
+          {
+            "meal_label": "Pot au feu",
+            "meal_type": "Lunch",
+            "meal_nut_stats": {
+              "protein": "25g",
+              "protein_daily_percentage": "45%",
+              "carbohydrate": "50g",
+              "carbohydrate_daily_percentage": "35%",
+              "fat": "20g",
+              "fat_daily_percentage": "30%",
+              "fiber": "8g",
+              "fiber_daily_percentage": "25%",
+              "vitamin_c": "40mg",
+              "vitamin_c_daily_percentage": "60%",
+              "kcal": 550
+            },
+            "recipe": [
+              "150g grilled chicken breast",
+              "100g quinoa",
+              "50g mixed vegetables (broccoli, carrots, bell peppers)",
+              "1 apple"
+            ]
+          },{
+            "meal_label": "Ratatouille",
+            "meal_type": "Dinner",
+            "meal_nut_stats": {
+              "protein": "25g",
+              "protein_daily_percentage": "45%",
+              "carbohydrate": "50g",
+              "carbohydrate_daily_percentage": "35%",
+              "fat": "20g",
+              "fat_daily_percentage": "30%",
+              "fiber": "8g",
+              "fiber_daily_percentage": "25%",
+              "vitamin_c": "40mg",
+              "vitamin_c_daily_percentage": "60%",
+              "kcal": 550
+            },
+            "recipe": [
+              "150g grilled chicken breast",
+              "100g quinoa",
+              "50g mixed vegetables (broccoli, carrots, bell peppers)",
+              "1 apple"
+            ]
+          }
+        ]
+      },
+      {
+        "date": "2023-01-02",
+        "day": 2,
+        "meals": [
+          {
+            "meal_label": "Breakfast",
+            "meal_nut_stats": {
+              "protein": "18g",
+              "protein_daily_percentage": "38%",
+              "carbohydrate": "45g",
+              "carbohydrate_daily_percentage": "32%",
+              "fat": "12g",
+              "fat_daily_percentage": "20%",
+              "fiber": "6g",
+              "fiber_daily_percentage": "22%",
+              "vitamin_c": "25mg",
+              "vitamin_c_daily_percentage": "45%",
+              "kcal": 380
+            },
+            "recipe": [
+              "Greek yogurt with honey",
+              "100g whole grain cereal",
+              "30g almonds",
+              "1 banana"
+            ]
+          },
+          {
+            "meal_label": "Dinner",
+            "meal_nut_stats": {
+              "protein": "30g",
+              "protein_daily_percentage": "50%",
+              "carbohydrate": "55g",
+              "carbohydrate_daily_percentage": "40%",
+              "fat": "25g",
+              "fat_daily_percentage": "35%",
+              "fiber": "7g",
+              "fiber_daily_percentage": "28%",
+              "vitamin_c": "35mg",
+              "vitamin_c_daily_percentage": "55%",
+              "kcal": 600
+            },
+            "recipe": [
+              "200g grilled salmon",
+              "150g sweet potato",
+              "50g steamed asparagus",
+              "1 orange"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

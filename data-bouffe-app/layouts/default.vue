@@ -1,22 +1,39 @@
 <template>
-    <div>
-      <Header />
-      <Sidebar />
-      <main class="ml-64 pt-16 pl-4 pr-4"> <!-- Adjust margins for sidebar width -->
-        <slot />
-      </main>
+  <div :class="{ 'sidebar-open': sidebarOpen }" class="layout">
+    <layout-sidebar :is-open="sidebarOpen" @toggleSidebar="toggleSidebar" />
+
+    <div class="main-content">
+      <slot />
     </div>
+  </div>
   </template>
   
-  <script>
-  import Header from '~/components/layout/header.vue'
-  import Sidebar from '~/components/layout/sidebar.vue'
+  <script setup lang="ts">
+  import { ref } from 'vue';
   
-  export default {
-    components: {
-      Header,
-      Sidebar
-    }
-  }
+  const sidebarOpen = ref(true);
+  
+  const toggleSidebar = () => {
+    sidebarOpen.value = !sidebarOpen.value;
+  };
   </script>
   
+
+<style scoped>
+/* Add your global styles here */
+
+.layout {
+  display: flex;
+}
+
+.sidebar-open .main-content {
+  margin-left: 250px; /* Adjust the value based on your sidebar width */
+  transition: margin-left 0.3s ease; /* Add smooth transition effect */
+}
+
+.main-content {
+  margin-left: 78px;
+  flex: 1;
+  overflow: hidden;
+}
+</style>
