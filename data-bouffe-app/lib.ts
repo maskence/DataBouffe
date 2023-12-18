@@ -59,6 +59,16 @@ export async function get_user_goals(){
   
     return data
   }
+
+export async function set_user_goals( goals : Object) {
+  const response = await fetch(api_host + 'goals', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(goals),
+      credentials: 'include'
+    });
+    return response
+}
   
 export async function get_meal_plan() {
     const response = await fetch("http://localhost:5000/api/meal_plan", {

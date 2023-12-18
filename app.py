@@ -19,8 +19,10 @@ app = Flask(__name__)
 CORS(app,supports_credentials=True)
 app.config['SECRET_KEY'] = 'fillboosted'
 
+
 jwt = JWTManager(app)
 app.config['JWT_SECRET_KEY'] = 'fillboosted'
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_NAME'] = 'access_token_cookie'
 app.config['JWT_COOKIE_SECURE'] = False
@@ -94,8 +96,9 @@ def goals_route():
     co = get_users_db()
     
     if request.method == "GET":
-        nutris = user_nutrients(user_id, co)
-        return dict(nutris), 200 
+        nutris = dict(user_nutrients(user_id, co))
+        nutris.pop("id")
+        return nutris, 200 
         
     if request.method == "POST":
         nutris = request.get_json()
@@ -135,9 +138,8 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-"""
+
 @app.after_request
 def after_request(response):
-    print("Response Headers:", response.headers)
+    print("Response Headers:", response.headers, response)
     return response
-"""

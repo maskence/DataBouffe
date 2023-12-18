@@ -17,6 +17,10 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { check_auth, login } from '~/lib';
 
+definePageMeta({
+    layout : "start"
+}
+)
 const username = ref('');
 const password = ref('');
 const error_message = ref('');

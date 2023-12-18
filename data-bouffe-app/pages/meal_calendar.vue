@@ -16,7 +16,7 @@
         <div class="day-title">
           <h1>{{ week_days[day_index % week_days.length] }}</h1>
         </div>
-        <div>{{ today_meals.reduce( (acc : number, val : any) => acc + val.nutrients.kcal,0) * 5}} kcal</div>
+        <div>{{ Math.floor(today_meals.reduce( (acc : number, val : any) => acc + val.nutrients.kcal,0) * 5)}} kcal</div>
         <div v-for="(meal_place, i) in meals_in_day" class="day-meal-container">
             <p> {{ meal_place }}</p>
             <div class="meal-card">

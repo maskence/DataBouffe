@@ -15,8 +15,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { get_user_infos, login, register } from '~/lib';
+import { login, register } from '~/lib';
 
+definePageMeta({
+    layout : "start"
+}
+)
 const username = ref('');
 const password = ref('');
 const error_message = ref('');

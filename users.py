@@ -49,14 +49,10 @@ def set_user_nutrients(user_id : int, nutris : dict, co : sql.Connection):
     The nutris dict has to conform with the nutrient's table's schema
     """
     user_nutris = co.execute("select (id) from user_nutrients where id == ?", [user_id]).fetchone()
-    if user_nutris:
-        placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])
-        print(f"update {placeholders} where id == ?")
-        co.execute(f"update user_nutrients set {placeholders} where id == ?", list(nutris.values()) + [user_id])
-    else:
-        nutri_cols = ",".join(nutris.keys())
-        placeholders = ",".join("?"*len(nutris))
-        co.execute(f"insert into user_nutrients (id,{nutri_cols}) values (?,{placeholders})", [user_id]+list(nutris.values()) )
+    print("=============", nutris)
+    placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])
+    print(f"update {placeholders} where id == ?")
+    co.execute(f"update user_nutrients set {placeholders} where id == ?", list(nutris.values()) + [user_id])
     co.commit()
     
 if __name__ == "__main__":

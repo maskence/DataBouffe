@@ -104,7 +104,7 @@ def solve_swap(current_plan, all_meals, objective, temperature = 5, cooling_fact
         steps += 1
 
 
-def get_meal_plan(df_meals, goals : dict, tolerance = 0.1):
+def get_meal_plan(df_meals, goals : dict, tolerance = 0.1, max_run_time = 1):
     print(goals, "GOALSSSS")
     all_meals = df_meals[list(goals.keys())].to_numpy() * 5#00g per meal
     
@@ -130,6 +130,8 @@ def get_meal_plan(df_meals, goals : dict, tolerance = 0.1):
                 
                 if loss < tolerance:
                     break
+            if time.time() - start_time > max_run_time:
+                break
     except KeyboardInterrupt:
         pass
     
