@@ -22,8 +22,11 @@ create table if not exists user_nutrients (
 
 def register_user(username : str, password : str, co : sql.Connection ) :
     password_hash = generate_password_hash(password)
-    co.execute("insert into users (username, password) values (?,?)", (username.lower(),password_hash))
+    cursor = co.cursor()
+    cursor.execute("insert into users (username, password) values (?,?)", (username.lower(),password_hash))
     co.commit()
+    
+    return cursor.lastrowid
 
 def log_in(username: str, password : str, co : sql.Connection):
     user = co.execute("select * from users where username == ? ", [username.lower()] ).fetchone()
@@ -38,7 +41,13 @@ def log_in(username: str, password : str, co : sql.Connection):
 def user_nutrients(user_id : int, co : sql.Connection):
     return co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
 
+def get_user(user_id : int, co : sql.Connection):
+    return co.execute("select * from users where id == (?)", [user_id]).fetchone()
+
 def set_user_nutrients(user_id : int, nutris : dict, co : sql.Connection):
+    """
+    The nutris dict has to conform with the nutrient's table's schema
+    """
     user_nutris = co.execute("select (id) from user_nutrients where id == ?", [user_id]).fetchone()
     if user_nutris:
         placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])

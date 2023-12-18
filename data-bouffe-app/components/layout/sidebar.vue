@@ -2,7 +2,7 @@
   <div :class="{ open: isOpen }" class="sidebar">
     <div class="logo-details">
       <i class="bx bxl-c-plus-plus icon"></i>
-      <div class="logo_name">DataBouffe</div>
+      <div class="logo_name"><a href="/" >DataBouffe</a></div>
       <i @click="toggleSidebar" class="bx bx-menu" id="btn"></i>
     </div>
     <ul class="nav-list">
@@ -12,6 +12,13 @@
           <span class="links_name">Dashboard</span>
         </nuxt-link>
         <span class="tooltip">Dashboard</span>
+      </li>
+      <li>
+        <nuxt-link to="/goals">
+          <i class="bx bx-grid-alt"></i>
+          <span class="links_name">My goals</span>
+        </nuxt-link>
+        <span class="tooltip">See your nutritional goals</span>
       </li>
       <li>
         <nuxt-link to="/meal_planner">
@@ -27,20 +34,7 @@
         </nuxt-link>
         <span class="tooltip">Calendrier Repas</span>
       </li>
-      <!-- <li>
-        <nuxt-link to="/user">
-          <i class="bx bx-user"></i>
-          <span class="links_name">Suivi Nutritionnel</span>
-        </nuxt-link>
-        <span class="tooltip">Suivi Nutritionnel</span>
-      </li>
-      <li>
-        <nuxt-link to="/user">
-          <i class="bx bx-user"></i>
-          <span class="links_name">Calendrier Repas</span>
-        </nuxt-link>
-        <span class="tooltip">Calendrier Repas</span>
-      </li> -->
+      <authBadge/>
     </ul>
   </div>
 </template>

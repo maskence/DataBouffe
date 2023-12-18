@@ -1,7 +1,7 @@
 <template>
-    <div class="h-screen flex flex-col justify-center">
+    <div class="flex flex-col justify-center h-screen">
 
-        <header class="bg-900 text-maintextcolor text-center py-20">
+        <header class="py-20 text-center bg-900 text-maintextcolor">
             <div class="container mx-auto">
                 <h1 class="text-4xl font-extrabold">Welcome to DataBouffe</h1>
             </div>
@@ -10,11 +10,11 @@
         <section class="py-16">
             <div class="container mx-auto text-center">
                 <h2 class="text-3xl font-semibold text-gray-800 font-alatsi">Ready to Start Your Meal Planner?</h2>
-                <p class="text-gray-600 mt-4">Join DataBouffe and make your diet planning a breeze.</p>
+                <p class="mt-4 text-gray-600">Join DataBouffe and make your diet planning a breeze.</p>
                 <!-- Get Started Button with Continuous Active Color -->
-                <button class="mt-8 px-6 py-3 rounded-full bg-activecolor text-white font-alatsi">Get Started</button>
+                <button class="px-6 py-3 mt-8 text-white rounded-full bg-activecolor font-alatsi"><a href="/login">Get Started</a></button>
                 <!-- Learn More Button with White Arrow -->
-                <a href="#" class="mt-4 inline-flex items-center px-4 py-2 rounded-full text-activecolor font-alatsi">
+                <a href="#" class="inline-flex items-center px-4 py-2 mt-4 rounded-full text-activecolor font-alatsi">
                     Learn More
                 </a>
             </div>

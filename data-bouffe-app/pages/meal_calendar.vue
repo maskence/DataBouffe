@@ -10,71 +10,41 @@
         </div>
       </div>
     </layout-page-header>
+
     <div class="main-card">
-      <div v-for="(day, index) in weekDays" :key="index" class="day-card">
+      <div v-for="(today_meals, day_index) in meals" class="day-card">
         <div class="day-title">
-          <h1>{{ day.name }}</h1>
+          <h1>{{ week_days[day_index % week_days.length] }}</h1>
         </div>
-        <div>{{ day.mealCount }} repas - {{ day.calories }} kcal</div>
-        <div class="day-meal-container">
-          <div
-            v-for="(meal, mealIndex) in day.meals"
-            :key="mealIndex"
-            class="meal-card"
-          >
-            {{ meal }}
-          </div>
+        <div>{{ today_meals.reduce( (acc : number, val : any) => acc + val.nutrients.kcal,0) * 5}} kcal</div>
+        <div v-for="(meal_place, i) in meals_in_day" class="day-meal-container">
+            <p> {{ meal_place }}</p>
+            <div class="meal-card">
+              {{ today_meals[i].name}}
+            </div>
         </div>
+        </div> 
       </div>
-    </div>
-  </div>
+    </div> 
 </template>
 
 <script setup lang="ts">
-const weekDays = [
-  {
-    name: "Lundi",
-    mealCount: 3,
-    calories: 1800,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-  {
-    name: "Mardi",
-    mealCount: 3,
-    calories: 1900,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-  {
-    name: "Mercredi",
-    mealCount: 3,
-    calories: 2000,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-  {
-    name: "Jeudi",
-    mealCount: 3,
-    calories: 1800,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-  {
-    name: "Vendredi",
-    mealCount: 3,
-    calories: 1700,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-  {
-    name: "Samedi",
-    mealCount: 3,
-    calories: 2000,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-  {
-    name: "Dimanche",
-    mealCount: 3,
-    calories: 1900,
-    meals: ["Repas 1", "Repas 2", "Repas 3"],
-  },
-];
+import { get_meal_plan } from '~/lib';
+
+
+const week_days = ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]
+const meals_in_day = ["midi","dinner"]
+
+const meals = ref<any[]>([])
+onMounted(async () => {
+  const all_meals = await get_meal_plan()
+
+  //bunch the list of meals received from the api into days, this will probably be done serverside once the algorithm is more evolved
+  for (let i = meals_in_day.length; i<=all_meals.length; i+=meals_in_day.length) {
+    meals.value.push(all_meals.slice(i-meals_in_day.length,i))
+  }
+})
+
 </script>
 
 <style scoped>
