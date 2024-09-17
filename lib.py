@@ -69,7 +69,6 @@ def load_ciqual_dataset(path : str) -> pd.DataFrame:
     
     df_meals = df[(df["alim_grp_nom_fr"] ==  "entrées et plats composés") & (~df["kcal"].isna()) ]
     return df_meals
-df_meals = load_ciqual_dataset("ciqual.xls")
     
 def compute_loss(meal_plan, objective):
     ratio_losses = np.sum(meal_plan, axis=0) / objective -1
@@ -105,7 +104,7 @@ def solve_swap(current_plan, all_meals, objective, temperature = 5, cooling_fact
         steps += 1
 
 
-def get_meal_plan(df_meals, goals : dict, tolerance = 0.1):
+def get_meal_plan(df_meals, goals : dict, tolerance = 0.1, max_run_time = 1):
     print(goals, "GOALSSSS")
     all_meals = df_meals[list(goals.keys())].to_numpy() * 5#00g per meal
     
@@ -131,6 +130,8 @@ def get_meal_plan(df_meals, goals : dict, tolerance = 0.1):
                 
                 if loss < tolerance:
                     break
+            if time.time() - start_time > max_run_time:
+                break
     except KeyboardInterrupt:
         pass
     
@@ -145,7 +146,7 @@ def get_meal_plan(df_meals, goals : dict, tolerance = 0.1):
     print("steps taken :", steps)
     print("time taken :", time.time() - start_time, "\n")
     
-    meals = df_meals.iloc[best_plan][["name"] + list(goals.keys()) ]
+    meals = df_meals.iloc[best_plan][["name","alim_code"] + list(goals.keys()) ]
     
     print("meals :", list(meals["name"]))
     #print("objective meals : ", list(df_meals.iloc[objective_plan]["name"]))

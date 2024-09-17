@@ -28,12 +28,14 @@ def test_login( username, password):
     resp = requests.post(host + '/api/login', json=payload)
     return resp
 
-def test_info(token):
-    headers = {'Authorization': f'Bearer {token}'}
-    resp = requests.post(host + '/api/infos', headers=headers, json={"glucid":150,"protein":100})
-    resp2 = requests.get(host + '/api/infos', headers=headers)
+def test_goals(token):
+    cookies = {'access_token_cookie': token}
+    resp = requests.post(host + '/api/goals', cookies=cookies, json={"glucid":150,"protein":100})
+    resp2 = requests.get(host + '/api/goals', cookies=cookies)
     return resp, resp2
-username = "issoyu"
+
+import random
+username = "okklssoyu" + str(random.randint(0,100000000))
 password = "chancla"
 
 resp = test_register(username, password)
@@ -41,11 +43,11 @@ print(resp.status_code)
 print(resp.json())
 
 resp = test_login(username, password)
-print(resp)
-jwt = resp.json()["access_token"]
+print(resp.json())
+jwt = resp.cookies["access_token_cookie"]
 
-resp, resp2 = test_info(jwt)
-print("test info", resp, resp2.json())
+resp, resp2 = test_goals(jwt)
+print("test goals", jwt, resp, resp2.json())
 
-resp_meals = requests.get(host + '/api/meal_plan', headers = {'Authorization': f'Bearer {jwt}'})
-print(resp_meals)
+resp_meals = requests.get(host + '/api/meal_plan', cookies = {'access_token_cookie': jwt})
+print(resp_meals.text)

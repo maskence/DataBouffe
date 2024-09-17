@@ -1,6 +1,6 @@
 <template>
     <div class="page-header">
-      <div class="page-header-content">
+      <div class="flex page-header-content">
         <slot/>
       </div>
     </div>

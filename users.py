@@ -22,8 +22,11 @@ create table if not exists user_nutrients (
 
 def register_user(username : str, password : str, co : sql.Connection ) :
     password_hash = generate_password_hash(password)
-    co.execute("insert into users (username, password) values (?,?)", (username.lower(),password_hash))
+    cursor = co.cursor()
+    cursor.execute("insert into users (username, password) values (?,?)", (username.lower(),password_hash))
     co.commit()
+    
+    return cursor.lastrowid
 
 def log_in(username: str, password : str, co : sql.Connection):
     user = co.execute("select * from users where username == ? ", [username.lower()] ).fetchone()
@@ -36,18 +39,27 @@ def log_in(username: str, password : str, co : sql.Connection):
     return user
 
 def user_nutrients(user_id : int, co : sql.Connection):
-    return co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
+    res = co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
+    return res
+
+def get_user(user_id : int, co : sql.Connection):
+    return co.execute("select * from users where id == (?)", [user_id]).fetchone()
 
 def set_user_nutrients(user_id : int, nutris : dict, co : sql.Connection):
+    """
+    The nutris dict has to conform with the nutrient's table's schema
+    """
     user_nutris = co.execute("select (id) from user_nutrients where id == ?", [user_id]).fetchone()
+    print("=============", nutris)
     if user_nutris:
         placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])
-        print(f"update {placeholders} where id == ?")
         co.execute(f"update user_nutrients set {placeholders} where id == ?", list(nutris.values()) + [user_id])
     else:
-        nutri_cols = ",".join(nutris.keys())
-        placeholders = ",".join("?"*len(nutris))
-        co.execute(f"insert into user_nutrients (id,{nutri_cols}) values (?,{placeholders})", [user_id]+list(nutris.values()) )
+        placeholders = ','.join(list(nutris.keys())) 
+        query = f'insert into user_nutrients ({placeholders},id) values ({"?," * len(nutris)} ?)'
+        print(query)
+        co.execute(query, list(nutris.values()) + [user_id])
+        print('created new user nutrient row')
     co.commit()
     
 if __name__ == "__main__":

@@ -19,38 +19,29 @@
     </div>
   </template>
   
-  <script>
+<script setup>
 import { ref, onMounted } from 'vue';
 import mealData from '~/store/mealExample.json';
 
-export default {
-  props: {
-    mealIndex: Number,
-    dayIndex: Number,
-  },
-  setup(props) {
-    const mealLabel = ref('');
-    const date = ref('');
-    const mealStats = ref({});
-    const recipe = ref([]);
+// Props are defined using the defineProps function
+const props = defineProps({
+  mealIndex: Number,
+  dayIndex: Number,
+});
 
-    onMounted(() => {
-      const meal = mealData.week[props.dayIndex].meals[props.mealIndex];
+const mealLabel = ref('');
+const date = ref('');
+const mealStats = ref({});
+const recipe = ref([]);
 
-      mealLabel.value = meal.meal_label;
-      date.value = meal.date;
-      mealStats.value = meal.meal_nut_stats;
-      recipe.value = meal.recipe;
-    });
+onMounted(() => {
+  const meal = mealData.week[props.dayIndex].meals[props.mealIndex];
 
-    return {
-      mealLabel,
-      date,
-      mealStats,
-      recipe,
-    };
-  },
-};
+  mealLabel.value = meal.meal_label;
+  date.value = meal.date;
+  mealStats.value = meal.meal_nut_stats;
+  recipe.value = meal.recipe;
+});
 </script>
   
   <style scoped>
