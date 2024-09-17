@@ -39,7 +39,8 @@ def log_in(username: str, password : str, co : sql.Connection):
     return user
 
 def user_nutrients(user_id : int, co : sql.Connection):
-    return co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
+    res = co.execute("select * from user_nutrients where id == (?)", [user_id]).fetchone()
+    return res
 
 def get_user(user_id : int, co : sql.Connection):
     return co.execute("select * from users where id == (?)", [user_id]).fetchone()
@@ -50,9 +51,15 @@ def set_user_nutrients(user_id : int, nutris : dict, co : sql.Connection):
     """
     user_nutris = co.execute("select (id) from user_nutrients where id == ?", [user_id]).fetchone()
     print("=============", nutris)
-    placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])
-    print(f"update {placeholders} where id == ?")
-    co.execute(f"update user_nutrients set {placeholders} where id == ?", list(nutris.values()) + [user_id])
+    if user_nutris:
+        placeholders = ",".join([f"{k} = ?" for k in nutris.keys()])
+        co.execute(f"update user_nutrients set {placeholders} where id == ?", list(nutris.values()) + [user_id])
+    else:
+        placeholders = ','.join(list(nutris.keys())) 
+        query = f'insert into user_nutrients ({placeholders},id) values ({"?," * len(nutris)} ?)'
+        print(query)
+        co.execute(query, list(nutris.values()) + [user_id])
+        print('created new user nutrient row')
     co.commit()
     
 if __name__ == "__main__":

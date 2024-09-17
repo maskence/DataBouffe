@@ -54,8 +54,6 @@ def register_route():
         set_user_nutrients(user_id, default_daily_goals, co)
     except sql.IntegrityError:
         return {"message": "username already taken"}, 400
-    except Exception:
-        return {"message":"unknown error"}, 400
     
     return {"message":"registerd sccuessfully"} ,200
 
@@ -102,6 +100,7 @@ def goals_route():
         
     if request.method == "POST":
         nutris = request.get_json()
+        print(nutris, 'NUTRIS ----')
         set_user_nutrients(user_id, nutris, co)
         return '', 200
 
